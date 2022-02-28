@@ -1,0 +1,27 @@
+echo "Hello :) Installing mid-project environment"
+
+echo "STEP #1: clonening the OpsSchool-Mid-Project repo"
+clone <path to repo>
+echo "clone completed"
+
+echo "STEP #2: Creating S3 bucket for storing terraform's remote state"
+cd <full path to s3 terraform file>
+terraform apply -auto-approve
+echo "S3 bucket creation completed"
+
+echo "STEP #3: Creating the infrastructure of the environment"
+cd <full path to terraform main setup file>
+terraform apply -auto-approve
+echo "Infrastructure creation on terraform completed"
+
+echo "STEP #4: Appling configuration"
+ansible playbook <role for jenkins>
+echo "Configuration completed"
+
+echo "STEP #5: deploy & run application"
+
+
+aws eks --region=us-east-1 update-kubeconfig --name project-eks-tWErwL1b
+kubectl get configmap aws-auth -n kube-system -o yaml
+kubectl edit configmap aws-auth -n kube-system 
+#add the arn of jenkins role
