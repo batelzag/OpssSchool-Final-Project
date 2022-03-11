@@ -31,9 +31,3 @@ variable "project_tag" {
     description   = "what is the project about"
     default       = "mid-project"
 }
-
-# # The node name for the consul cluster
-# variable consul_node_name {
-#     type        = string
-#     description = "The consul node name"
-# }

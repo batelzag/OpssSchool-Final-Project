@@ -10,6 +10,19 @@ provider "aws" {
 	# }
 }
 
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.0"
+    }
+    http = {
+      source  = "hashicorp/http"
+      version = "2.0.0"
+    }
+  }
+}
+
 # terraform {
 # 	required_version = ">= 0.12"
 #   	backend "s3" {
@@ -35,7 +48,7 @@ module "vpc" {
 # }
 
 module "jenkins-server" {
-	source 				= "./instances/consul_and_jenkins"
+	source 				= "./instances/jenkins_server"
 	vpc_id 				= module.vpc.vpc_id
 	number_of_instances = 1
 	subnets_id 			= "${module.vpc.private_subnets[*]}"
@@ -43,19 +56,13 @@ module "jenkins-server" {
 
 	ec2_instance_security_groups = ["${module.vpc.jenkins_server_sg}", "${module.vpc.consul_agents_sg}"]
 	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
-	# configuration_script 		 = "../configuration/scripts/jenkins_server.sh" #change to "./configuration/scripts/jenkins_server.sh"
-	user_data_script 			 = "${data.template_cloudinit_config.jenkins_server.rendered}"
 
-	# consul_node_name = "jenkins-server"
-	
-	additional_tags = {
-		Name			= "jenkins-server"
-    	consul_server 	= "false"
-	}
+	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
+	elk_private_ip 				 = "${module.elk-server.elk_private_ip[0]}"
 }
 
 module "jenkins-agents" {
-	source 				= "./instances/consul_and_jenkins"
+	source 				= "./instances/jenkins_agents"
 	vpc_id 				= module.vpc.vpc_id
 	number_of_instances = 2
 	subnets_id 			= "${module.vpc.private_subnets[*]}"
@@ -63,20 +70,13 @@ module "jenkins-agents" {
 
 	ec2_instance_security_groups = ["${module.vpc.consul_agents_sg}"]
 	ec2_instance_iam_profile 	 = module.vpc.jenkins-access-eks-profile
-	# configuration_script 		 = "../configuration/scripts/jenkins_agent.sh" #change to "./configuration/scripts/jenkins_agent.sh"
-	user_data_script 			 = "${data.template_cloudinit_config.jenkins_agent.rendered}"
 
-
-	# consul_node_name = "jenkins-agent"
-	
-	additional_tags = {
-		Name 			= "jenkins-agent"
-    	consul_server 	= "false"
-	}
+	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
+	elk_private_ip 				 = "${module.elk-server.elk_private_ip[0]}"
 }
 
 module "consul-servers" {
-	source 				= "./instances/consul_and_jenkins"
+	source 				= "./instances/consul"
 	vpc_id 				= module.vpc.vpc_id
 	number_of_instances = 3
 	subnets_id 			= "${module.vpc.private_subnets[*]}"
@@ -84,16 +84,9 @@ module "consul-servers" {
 
 	ec2_instance_security_groups = ["${module.vpc.consul_servers_sg}", "${module.vpc.consul_agents_sg}"]
 	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
-	# configuration_script 		 = "../configuration/scripts/consul_server.sh" #change to "./configuration/scripts/consul_server.sh"
-	user_data_script 			 = "${data.template_cloudinit_config.consul_server.rendered}"
 
-
-	# consul_node_name = "consul-server"
-	
-	additional_tags = {
-		Name 			= "consul-server"
-    	consul_server 	= "true"
-	}
+	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
+	elk_private_ip 				 = "${module.elk-server.elk_private_ip[0]}"
 }
 
 module "ansible-server" {
@@ -105,17 +98,9 @@ module "ansible-server" {
 
 	ec2_instance_security_groups = ["${module.vpc.consul_agents_sg}"]
 	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
+
+	elk_private_ip 				 = "${module.elk-server.elk_private_ip[0]}"
 	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
-	# configuration_script 		 = "../configuration/scripts/ansible_server.sh"
-	user_data_script 			 = "${data.template_cloudinit_config.ansible_server.rendered}"
-
-
-	# consul_node_name = "ansible-server"
-
-	additional_tags = {
-		Name 			= "ansible-server"
-    	consul_server 	= "false"
-	}
 
 	depends_on = [
 		module.jenkins-server
@@ -123,7 +108,7 @@ module "ansible-server" {
 }
 
 module "prometheus-server" {
-	source 				= "./instances/consul_and_jenkins"
+	source 				= "./instances/prometheus"
 	vpc_id 				= module.vpc.vpc_id
 	number_of_instances = 1
 	subnets_id 			= "${module.vpc.private_subnets[*]}"
@@ -131,18 +116,13 @@ module "prometheus-server" {
 
 	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
 	ec2_instance_security_groups = ["${module.vpc.prometheus_server_sg}", "${module.vpc.consul_agents_sg}"]
-	user_data_script 			 = "${data.template_cloudinit_config.prometheus_server.rendered}"
 
-	# consul_node_name = "prometheus-server"
-
-	additional_tags = {
-		Name = "prometheus-server"
-		consul_server 	= "false"
-	}
+	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
+	elk_private_ip 				 = "${module.elk-server.elk_private_ip[0]}"
 }
 
 module "grafana-server" {
-	source 				= "./instances/consul_and_jenkins"
+	source 				= "./instances/grafana"
 	vpc_id 				= module.vpc.vpc_id
 	number_of_instances = 1
 	subnets_id 			= "${module.vpc.private_subnets[*]}"
@@ -150,14 +130,22 @@ module "grafana-server" {
 
 	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
 	ec2_instance_security_groups = ["${module.vpc.grafana_server_sg}", "${module.vpc.consul_agents_sg}"]
-	user_data_script 			 = "${data.template_cloudinit_config.grafana_server.rendered}"
 
-	# consul_node_name = "grafana-server"
+	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
+	elk_private_ip 				 = "${module.elk-server.elk_private_ip[0]}"
+}
 
-	additional_tags = {
-		Name = "grafana-server"
-		consul_server 	= "false"
-	}
+module "elk-server" {
+	source 				= "./instances/elk"
+	vpc_id 				= module.vpc.vpc_id
+	number_of_instances = 1
+	subnets_id 			= "${module.vpc.private_subnets[*]}"
+	key_name 			= "${module.vpc.pem_key_name}"
+
+	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
+	ec2_instance_security_groups = ["${module.vpc.elk_server_sg}", "${module.vpc.consul_agents_sg}"]
+	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
+
 }
 
 module "bastion-server" {
@@ -168,10 +156,6 @@ module "bastion-server" {
 	key_name 			= "${module.vpc.pem_key_name}"
 
 	ec2_instance_security_groups = ["${module.vpc.bastion_server_sg}"]
-
-	additional_tags = {
-		Name = "bastion-server"
-	}
 }
 
 module "alb" {
@@ -179,10 +163,10 @@ module "alb" {
 	vpc_id 							= module.vpc.vpc_id
 	subnets_id 						= "${module.vpc.public_subnets[*]}"
 
-	ec2_instance_security_groups 	= ["${module.vpc.consul_servers_sg}","${module.vpc.jenkins_server_sg}", "${module.vpc.prometheus_server_sg}", "${module.vpc.grafana_server_sg}"]
+	ec2_instance_security_groups 	= ["${module.vpc.consul_servers_sg}","${module.vpc.jenkins_server_sg}", "${module.vpc.prometheus_server_sg}", "${module.vpc.grafana_server_sg}", "${module.vpc.elk_server_sg}"]
 	consul_servers_target_group 	= module.consul-servers.instance_id
 	jenkins_server_target_group 	= module.jenkins-server.instance_id
 	prometheus_server_target_group	= module.prometheus-server.instance_id
 	grafana_server_target_group		= module.grafana-server.instance_id
-	
+	elk_server_target_group 		= module.elk-server.instance_id 
 }

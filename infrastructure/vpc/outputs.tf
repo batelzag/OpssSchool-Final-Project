@@ -52,6 +52,12 @@ output "grafana_server_sg" {
     description = "the id of the security group assigned to the grafana server"
 }
 
+# Output the elk server security group id
+output "elk_server_sg" {
+    value       = aws_security_group.elk_server_sg.id
+    description = "the id of the security group assigned to the elk server"
+}
+
 # Output the bastion server security group id
 output "bastion_server_sg" {
     value       = aws_security_group.bastion_server_sg.id

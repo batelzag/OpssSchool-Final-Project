@@ -7,7 +7,7 @@ variable "instance_type" {
 
 # The number of instances to create
 variable "number_of_instances" {
-  description = "The number of instances to create"
+  description = "The number of jenkins agents to create"
 }
 
 # The key name for EC2 instance
@@ -34,8 +34,26 @@ variable "ec2_instance_security_groups" {
   type        = list(string)
 }
 
-variable "instance_name" {
-  description = "The name that will be given to the instance - for the aws tag Name"
+# The IAM profile that will be assigned to the instance
+variable "ec2_instance_iam_profile" {
+  description = "The IAM profile that will be assigned to the instance"
   type        = string
-  default     = "bastion-server"  
+}
+
+variable "instance_name" {
+  description = "The name that will be given to the instance - for the aws tag Name and for the consul node name"
+  type        = string
+  default     = "consul-server"  
+}
+
+# The elk server private ip address
+variable "elk_private_ip" {
+  description = "The elk server private ip address"
+  type        = string
+}
+
+# The Bastion server IP address for provisioning files
+variable "bastion_public_ip" {
+  description = "The public IP of the bastion server"
+  type        = string
 }

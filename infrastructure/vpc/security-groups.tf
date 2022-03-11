@@ -86,9 +86,33 @@ resource "aws_security_group" "consul_agents_sg" {
   }
 
   ingress {
+    description = "Allow DNS requests inside sg"
+    from_port   = 8500
+    to_port     = 8500
+    protocol    = "tcp"
+    self        = true
+  }
+
+  ingress {
     description = "Allow node exporter scarping inside sg"
     from_port   = 9100
     to_port     = 9100
+    protocol    = "tcp"
+    self        = true
+  }
+
+  ingress {
+    description = "Allow filebeat log transfering inside sg"
+    from_port   = 9200
+    to_port     = 9200
+    protocol    = "tcp"
+    self        = true
+  }
+
+  ingress {
+    description = "Allow filebeat log transfering inside sg"
+    from_port   = 5601
+    to_port     = 5601
     protocol    = "tcp"
     self        = true
   }
@@ -158,6 +182,29 @@ resource "aws_security_group" "grafana_server_sg" {
     description = "Allow UI access from the world"
     from_port   = 3000
     to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] #consider changing to my ip only.
+  }
+
+  egress {
+    description = "Allow all outgoing traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# Create a dedicated SG for elk Server
+resource "aws_security_group" "elk_server_sg" {
+  name          = "elk-server"
+  description   = "Allow elk server inbound traffic"
+  vpc_id        = aws_vpc.project-vpc.id
+
+  ingress {
+    description = "Allow UI access from the world"
+    from_port   = 5601
+    to_port     = 5601
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"] #consider changing to my ip only.
   }

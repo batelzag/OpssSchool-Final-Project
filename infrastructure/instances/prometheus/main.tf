@@ -8,42 +8,12 @@ resource "aws_instance" "ec2-instance" {
   associate_public_ip_address = false
   vpc_security_group_ids      = var.ec2_instance_security_groups
   iam_instance_profile        = var.ec2_instance_iam_profile
-  user_data                   = data.template_cloudinit_config.ansible_server.rendered
+  user_data                   =  data.template_cloudinit_config.prometheus_server.rendered
 
   tags = {
     Name = "${var.instance_name}"
     consul_server = "false"
   }
-
-  provisioner "file" {
-    source      = "${var.key_name}"
-    destination = "/home/ubuntu/${var.key_name}"
-
-    connection {
-      host = self.private_ip
-      type = "ssh"
-      user = "ubuntu"
-      private_key = file(var.key_name) 
-      bastion_host = "${var.bastion_public_ip}"
-      bastion_user = "ubuntu"
-      bastion_private_key = file(var.key_name)
-    } 
-  }
-
-  provisioner "file" {
-    source      = "../configuration/roles/jenkins_install_plugins" 
-    destination = "/home/ubuntu"
-
-    connection {   
-      host        = self.private_ip
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = file(var.key_name) 
-      bastion_host = "${var.bastion_public_ip}"
-      bastion_user = "ubuntu"
-      bastion_private_key = file(var.key_name)    
-    }  
-	}
 
   provisioner "file" {
     source      = "../configuration/filebeat.yml" 

@@ -38,29 +38,23 @@ variable "ec2_instance_security_groups" {
 variable "ec2_instance_iam_profile" {
   description = "The IAM profile that will be assigned to the instance"
   type        = string
-  }
-
-# The bash script for the configuration of the instance 
-# variable "configuration_script" {
-#   description = "The bash script for the configuration of the instance"
-#   type        = string
-# }  
+}
 
 # The Bastion server IP address for provisioning files
 variable "bastion_public_ip" {
   description = "The public IP of the bastion server"
   type        = string
-}  
-
-# Setting additional tags for the reasurces
-variable "additional_tags" {
-  default     = {}
-  description = "Additional resource tags"
-  type        = map(string)
 }
 
-# The user data script to run on the boot of the instance
-variable user_data_script {
-    type        = string
-    description = "The user data configuration"
+# The instance name 
+variable "instance_name" {
+  description = "The name that will be given to the instance - for the aws tag Name and for the consul node name"
+  type        = string
+  default     = "ansible-server"  
+}
+
+# The elk server private ip address
+variable "elk_private_ip" {
+  description = "The elk server private ip address"
+  type        = string
 }

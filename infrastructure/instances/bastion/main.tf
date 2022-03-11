@@ -8,5 +8,7 @@ resource "aws_instance" "ec2-instance" {
   associate_public_ip_address = true
   vpc_security_group_ids      = var.ec2_instance_security_groups
 
-  tags = var.additional_tags
+  tags = {
+    Name = "${var.instance_name}"  
+  }
 }
