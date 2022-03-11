@@ -12,10 +12,12 @@ filters:
 
 groups:
   jenkins_server: "'jenkins-server' in tags.Name"
-  jenkins_agent: "'jenkins-agent' in tags.Name"
+  jenkins_agents: "'jenkins-agent' in tags.Name"
   consul_servers: "'consul-server' in tags.Name" 
   consul_agents: "'consul-server' not in tags.Name"
   ansible_server: "'ansible-server' in tags.Name"
+  grafana_server: "'grafana-server' in tags.Name"
+  prometheus_server: "'prometheus-server' in tags.Name"
 
 # hostnames:
   # - network-interface.addresses.private-ip-address
