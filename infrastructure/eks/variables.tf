@@ -15,7 +15,7 @@ locals {
 
 locals {
   k8s_service_account_namespace = "default"
-  k8s_service_account_name      = "project-sa"
+  k8s_service_account_name      = "opsschool-sa"
 }
 
 #  VPC where the cluster and workers will be deployed

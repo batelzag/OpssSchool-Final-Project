@@ -10,6 +10,12 @@ output "vpc_cidr" {
     description = "the cidr block of the VPC"
 }
 
+# Output the Route53 private zone
+output "vpc_route53_zone" {
+    value       = aws_route53_zone.private.zone_id
+    description = "the zone id of the route53 private hosted zone"
+}
+
 # Output the public subnets ids
 output "public_subnets" {
     value       = "${aws_subnet.public.*.id}"

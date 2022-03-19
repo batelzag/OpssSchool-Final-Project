@@ -22,6 +22,12 @@ variable  "vpc_id" {
   type        = string
 }
 
+# The Route53 private zone id
+variable "vpc_route53_zone" {
+  description = "the vpc's privat route53 hosted zone"
+  type        = string
+}
+
 # The subnets ids that will be assigned to the instance
 variable "subnets_id" {
   description = "The subnets ids that will be assigned to the instance"

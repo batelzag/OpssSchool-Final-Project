@@ -38,15 +38,16 @@ module "vpc" {
 	number_of_public_subnets 	= 2
 	number_of_private_subnets 	= 2
 	key_name 					= "mid_project_key.pem"
+	route53_domain_name			= "opsschool.internal"
 }
 
-module "eks" {
-  	source 		= "./eks"
-	vpc_id 		= module.vpc.vpc_id
-	# key_name 	= "${module.vpc.pem_key_name}"
-	subnets_id 	= "${module.vpc.private_subnets[*]}" #change to private
-	consul_agents_sg = "${module.vpc.consul_agents_sg}"
-}
+# module "eks" {
+#   	source 		= "./eks"
+# 	vpc_id 		= module.vpc.vpc_id
+# 	# key_name 	= "${module.vpc.pem_key_name}"
+# 	subnets_id 	= "${module.vpc.private_subnets[*]}" #change to private
+# 	consul_agents_sg = "${module.vpc.consul_agents_sg}"
+# }
 
 module "jenkins-server" {
 	source 				= "./instances/jenkins_server"
@@ -54,12 +55,12 @@ module "jenkins-server" {
 	number_of_instances = 1
 	subnets_id 			= "${module.vpc.private_subnets[*]}"
 	key_name 			= "${module.vpc.pem_key_name}"
+	vpc_route53_zone	= "${module.vpc.vpc_route53_zone}"
 
 	ec2_instance_security_groups = ["${module.vpc.jenkins_server_sg}", "${module.vpc.consul_agents_sg}"]
 	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
 
 	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
-	# elk_private_ip 				 = "${module.elk-server.elk_private_ip[0]}"
 }
 
 module "jenkins-agents" {
@@ -68,12 +69,12 @@ module "jenkins-agents" {
 	number_of_instances = 2
 	subnets_id 			= "${module.vpc.private_subnets[*]}"
 	key_name 			= "${module.vpc.pem_key_name}"
+	vpc_route53_zone	= "${module.vpc.vpc_route53_zone}"
 
 	ec2_instance_security_groups = ["${module.vpc.consul_agents_sg}"]
 	ec2_instance_iam_profile 	 = module.vpc.jenkins-access-eks-profile
 
 	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
-	# elk_private_ip 				 = "${module.elk-server.elk_private_ip[0]}"
 }
 
 module "consul-servers" {
@@ -82,12 +83,12 @@ module "consul-servers" {
 	number_of_instances = 3
 	subnets_id 			= "${module.vpc.private_subnets[*]}"
 	key_name 			= "${module.vpc.pem_key_name}"
+	vpc_route53_zone	= "${module.vpc.vpc_route53_zone}"
 
 	ec2_instance_security_groups = ["${module.vpc.consul_servers_sg}", "${module.vpc.consul_agents_sg}"]
 	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
 
 	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
-	# elk_private_ip 				 = "${module.elk-server.elk_private_ip[0]}"
 }
 
 module "ansible-server" {
@@ -96,11 +97,11 @@ module "ansible-server" {
 	number_of_instances = 1
 	subnets_id 			= "${module.vpc.private_subnets[*]}"
 	key_name 			= "${module.vpc.pem_key_name}"
+	vpc_route53_zone	= "${module.vpc.vpc_route53_zone}"
 
 	ec2_instance_security_groups = ["${module.vpc.consul_agents_sg}"]
 	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
 
-	# elk_private_ip 				 = "${module.elk-server.elk_private_ip[0]}"
 	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
 
 	depends_on = [
@@ -114,12 +115,12 @@ module "prometheus-server" {
 	number_of_instances = 1
 	subnets_id 			= "${module.vpc.private_subnets[*]}"
 	key_name 			= "${module.vpc.pem_key_name}"
+	vpc_route53_zone	= "${module.vpc.vpc_route53_zone}"
 
 	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
 	ec2_instance_security_groups = ["${module.vpc.prometheus_server_sg}", "${module.vpc.consul_agents_sg}"]
 
 	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
-	# elk_private_ip 				 = "${module.elk-server.elk_private_ip[0]}"
 }
 
 module "grafana-server" {
@@ -128,12 +129,12 @@ module "grafana-server" {
 	number_of_instances = 1
 	subnets_id 			= "${module.vpc.private_subnets[*]}"
 	key_name 			= "${module.vpc.pem_key_name}"
+	vpc_route53_zone	= "${module.vpc.vpc_route53_zone}"
 
 	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
 	ec2_instance_security_groups = ["${module.vpc.grafana_server_sg}", "${module.vpc.consul_agents_sg}"]
 
 	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
-	# elk_private_ip 				 = "${module.elk-server.elk_private_ip[0]}"
 }
 
 module "elk-server" {
@@ -142,11 +143,11 @@ module "elk-server" {
 	number_of_instances = 1
 	subnets_id 			= "${module.vpc.private_subnets[*]}"
 	key_name 			= "${module.vpc.pem_key_name}"
+	vpc_route53_zone	= "${module.vpc.vpc_route53_zone}"
 
 	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
 	ec2_instance_security_groups = ["${module.vpc.elk_server_sg}", "${module.vpc.consul_agents_sg}"]
 	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
-
 }
 
 module "bastion-server" {
@@ -155,12 +156,10 @@ module "bastion-server" {
 	number_of_instances = 1
 	subnets_id 			= "${module.vpc.public_subnets[*]}"
 	key_name 			= "${module.vpc.pem_key_name}"
+	vpc_route53_zone	= "${module.vpc.vpc_route53_zone}"
 
 	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
 	ec2_instance_security_groups = ["${module.vpc.bastion_server_sg}", "${module.vpc.consul_agents_sg}"]
-
-	# elk_private_ip 				 = "${module.elk-server.elk_private_ip[0]}"
-
 }
 
 module "alb" {
