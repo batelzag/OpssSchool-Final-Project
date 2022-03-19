@@ -1,0 +1,30 @@
+
+# Available parameters and their default values for the Consul chart.
+
+# Holds values that affect multiple components of the chart.
+global:
+  enabled: false
+  image: "hashicorp/consul:1.11.3"
+  datacenter: mid-project
+  gossipEncryption:
+    # secretName is the name of the Kubernetes secret that holds the gossip
+    # encryption key. The secret must be in the same namespace that Consul is installed into.
+    secretName: "consul-gossip-encryption-key"
+    # secretKey is the key within the Kubernetes secret that holds the gossip
+    # encryption key.
+    secretKey: "key"
+# Values that configure running a Consul client on Kubernetes nodes.
+client:
+  enabled: true
+  exposeGossipPorts: true
+  join:
+    - "provider=aws tag_key=consul_server tag_value=true"
+  # affinity: null
+dns:
+  # @type: boolean
+  enabled: true
+  clusterIP: "172.20.10.10"
+syncCatalog:
+  # True if you want to enable the catalog sync. Set to "-" to inherit from
+  # global.enabled.
+  enabled: true

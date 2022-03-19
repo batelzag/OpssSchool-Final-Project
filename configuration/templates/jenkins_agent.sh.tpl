@@ -21,7 +21,7 @@ sudo tee /etc/consul.d/jenkins_agent.json > /dev/null <<EOF
   "service": {
     "id": "jenkins-agent",
     "name": "jenkins-agent",
-    "tags": ["jenkins", "jenkins agent", "consul agent"]
+    "tags": ["jenkins", "jenkins agent", "docker"]
   }
 }
 
@@ -29,5 +29,9 @@ EOF
 
 # Register the jenkins agent service to consul by reloading the consul service
 consul reload
+
+# Install Trivy for Vulnerability scans 
+wget https://github.com/aquasecurity/trivy/releases/download/v0.17.0/trivy_0.17.0_Linux-64bit.deb
+sudo dpkg -i trivy_0.17.0_Linux-64bit.deb
 
 exit 0

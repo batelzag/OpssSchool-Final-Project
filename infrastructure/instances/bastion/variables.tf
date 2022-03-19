@@ -39,3 +39,9 @@ variable "instance_name" {
   type        = string
   default     = "bastion-server"  
 }
+
+# The IAM profile that will be assigned to the instance
+variable "ec2_instance_iam_profile" {
+  description = "The IAM profile that will be assigned to the instance"
+  type        = string
+}

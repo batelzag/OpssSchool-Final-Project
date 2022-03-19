@@ -50,6 +50,30 @@ scrape_configs:
       - source_labels: ['__meta_consul_node']
         target_label: 'instance'
 
+  - job_name: 'elasticsearch'
+    metrics_path: '/metrics'
+    consul_sd_configs:
+      - server: 'localhost:8500'
+        services:
+          - elasticsearch-server
+    relabel_configs:
+      - source_labels: ['__address__']
+        target_label: '__address__'
+        regex: '(.*):(.*)'
+        replacement: '$1:9100'
+      - source_labels: ['__meta_consul_node']
+        target_label: 'instance'
+
+  - job_name: 'jenkins'
+    metrics_path: '/prometheus/'
+    consul_sd_configs:
+      - server: 'localhost:8500'
+        services:
+          - jenkins-server
+    relabel_configs:
+      - source_labels: ['__meta_consul_node']
+        target_label: 'instance'
+
 EOF
 
 # Configure prometheus service
@@ -78,7 +102,7 @@ sudo tee /etc/consul.d/prometheus_server.json > /dev/null <<EOF
     "id": "prometheus-server",
     "name": "prometheus-server",
     "port": 9090,
-    "tags": ["prometheus", "consul agent", "monitoring"],
+    "tags": ["prometheus", "monitoring"],
     "checks": [
       {
         "name": "HTTP API on port 9090",
@@ -91,6 +115,11 @@ sudo tee /etc/consul.d/prometheus_server.json > /dev/null <<EOF
         "tcp": "localhost:9090",
         "interval": "10s",
         "timeout": "1s"
+      },
+      {
+        "name": "prometheus deamon",
+        "args": ["systemctl", "status", "prometheus"],
+        "interval": "60s"
       }
     ]
   }

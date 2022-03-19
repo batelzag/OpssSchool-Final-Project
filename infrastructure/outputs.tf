@@ -40,10 +40,10 @@ output "kibana_url" {
   value       = "http://${module.alb.alb_dns_name}:5601"
 }
 
-# # The EKS cluster name
-# output "cluster_name" {
-#   description = "Kubernetes Cluster Name"
-#   value       = module.elk.cluster_name
-# }
+# The EKS cluster name
+output "cluster_name" {
+  description = "Kubernetes Cluster Name"
+  value       = module.eks.cluster_name
+}
 
 # maybe add also the eks endpoint

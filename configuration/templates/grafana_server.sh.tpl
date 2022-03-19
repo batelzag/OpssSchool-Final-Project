@@ -21,7 +21,7 @@ sudo tee /etc/consul.d/grafana_server.json > /dev/null <<EOF
     "id": "grafana-server",
     "name": "grafana-server",
     "port": 3000,
-    "tags": ["grafana", "consul agent", "monitoring"],
+    "tags": ["grafana", "monitoring"],
     "checks": [
       {
         "name": "HTTP API on port 3000",
@@ -34,6 +34,11 @@ sudo tee /etc/consul.d/grafana_server.json > /dev/null <<EOF
         "tcp": "localhost:3000",
         "interval": "10s",
         "timeout": "1s"
+      },
+      {
+        "name": "grafana deamon",
+        "args": ["systemctl", "status", "grafana-server"],
+        "interval": "60s"
       }
     ]
   }
@@ -45,3 +50,9 @@ EOF
 consul reload
 
 exit 0
+
+# [smtp]
+# ;enabled = true
+# ;host = smtp.gmail.com:587
+# ;user = batezag@gmail.com
+# ;password = """<app_password>"""

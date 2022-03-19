@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# This script installs and configures the instance as jenkins server
+# This script installs and configures jenkins server
 
 # If there will be an error message when running the script, it will stop and will not continue to other jobs
 set -e
@@ -25,7 +25,7 @@ sudo tee /etc/consul.d/jenkins_server.json > /dev/null <<EOF
     "id": "jenkins-server",
     "name": "jenkins-server",
     "port": 8080,
-    "tags": ["jenkins", "jenkins server", "docker", "consul agent"],
+    "tags": ["jenkins", "jenkins server", "docker"],
     "checks": [
       {
         "name": "HTTP API on port 8080",

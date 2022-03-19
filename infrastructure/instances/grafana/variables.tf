@@ -46,12 +46,6 @@ variable "instance_name" {
   default     = "grafana-server"  
 }
 
-# The elk server private ip address
-variable "elk_private_ip" {
-  description = "The elk server private ip address"
-  type        = string
-}
-
 # The Bastion server IP address for provisioning files
 variable "bastion_public_ip" {
   description = "The public IP of the bastion server"

@@ -27,3 +27,7 @@ variable  "vpc_id" {
 variable "subnets_id" {
   type = list(string)
 }
+
+variable "consul_agents_sg" {
+  type = string
+}

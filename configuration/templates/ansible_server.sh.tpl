@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# This script installs and configures ansible
+# This script installs and configures ansible server and execute a playbook to install jenkins server plugins
 
 # If there will be an error message when running the script, it will stop and will not continue to other jobs
 set -e
@@ -28,7 +28,7 @@ tee /etc/consul.d/ansible_server.json > /dev/null <<EOF
   "service": {
     "id": "ansible-server",
     "name": "ansible-server",
-    "tags": ["ansible", "ansible server", "consul agent"]
+    "tags": ["ansible", "ansible server"]
   }
 }
 EOF
@@ -42,7 +42,7 @@ sudo chmod 400 /home/ubuntu/mid_project_key.pem
 # In order to make sure Jenkins server is fully up, suspending the run of the playbook for 30 seconds
 sleep 30
 
-# Running the Jenkins Install Plugins role
+# Running Jenkins Install Plugins role
 ansible-playbook -i /etc/ansible/aws_ec2.yml /etc/ansible/roles/jenkins_install_plugins/run_setup.yml \
 -u ubuntu --private-key /home/ubuntu/mid_project_key.pem -e 'ansible_python_interpreter=/usr/bin/python3'
 

@@ -22,7 +22,7 @@ sudo tee /etc/consul.d/elasticsearch_server.json > /dev/null <<EOF
     "id": "elasticsearch-server",
     "name": "elasticsearch-server",
     "port": 9200,
-    "tags": ["elasticsearch", "consul agent", "logging", "elk"],
+    "tags": ["elasticsearch", "elasticsearch-server", "logging", "elk"],
     "checks": [
       {
         "name": "tcp on port 9200",
@@ -31,7 +31,7 @@ sudo tee /etc/consul.d/elasticsearch_server.json > /dev/null <<EOF
         "timeout": "1s"
       },
       {
-        "name": "elasticsearch service",
+        "name": "elasticsearch deamon",
         "args": ["systemctl", "status", "elasticsearch"],
         "interval": "60s"
       }

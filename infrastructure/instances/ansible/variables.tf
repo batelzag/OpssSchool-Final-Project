@@ -52,9 +52,3 @@ variable "instance_name" {
   type        = string
   default     = "ansible-server"  
 }
-
-# The elk server private ip address
-variable "elk_private_ip" {
-  description = "The elk server private ip address"
-  type        = string
-}

@@ -8,8 +8,8 @@ data "template_file" "consul_agent" {
     }
 }
 
-data "template_file" "ansible_server" {
-    template  = "${file("../configuration/templates/ansible_server.sh.tpl")}"
+data "template_file" "bastion_server" {
+    template  = "${file("../configuration/templates/bastion_server.sh.tpl")}"
 }
 
 data "template_file" "node_exporter" {
@@ -26,12 +26,12 @@ data "template_file" "filebeat" {
     }
 }
 
-data "template_cloudinit_config" "ansible_server" {
+data "template_cloudinit_config" "bastion_server" {
     part {
         content = "${data.template_file.consul_agent.rendered}"
     }
     part {
-        content = "${data.template_file.ansible_server.rendered}"
+        content = "${data.template_file.bastion_server.rendered}"
     }
     part {
         content = "${data.template_file.node_exporter.rendered}"

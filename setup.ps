@@ -4,10 +4,20 @@ echo "STEP #1: clonening the OpsSchool-Mid-Project repo"
 clone <path to repo>
 echo "clone completed"
 
-echo "STEP #2: Creating S3 bucket for storing terraform's remote state"
+echo "STEP #2: scanning terraform's configuration files for vulnerabilities"
+cd <repo cloned folder>
+snyk auth 
+snyk iac test .
+
+echo "STEP #3: scanning terraform plan for vulnerabilities
+terraform plan -out=tfplan.binary
+terraform show -json tfplan.binary > tf-plan.json
+snyk iac test --scan=planned-values tf-plan.json
+
+echo "STEP #4: Creating S3 bucket for storing terraform's remote state"
 cd <full path to s3 terraform file>
 terraform apply -auto-approve
-echo "S3 bucket creation completed"
+echo "S3 bucket creation completted"
 
 echo "STEP #3: Creating the infrastructure of the environment"
 cd <full path to terraform main setup file>
@@ -25,3 +35,38 @@ aws eks --region=us-east-1 update-kubeconfig --name project-eks-tWErwL1b
 kubectl get configmap aws-auth -n kube-system -o yaml
 kubectl edit configmap aws-auth -n kube-system 
 #add the arn of jenkins role
+
+
+
+
+
+
+
+consul & k8s
+
+helm repo add hashicorp https://helm.releases.hashicorp.com
+
+# Install Helm chart for consul
+helm install consul hashicorp/consul --set global.name=consul --create-namespace --namespace consul -f ../configuration/Kubernetes/consul-helm/values.yaml
+
+# Create gossip encryption secret
+kubectl create secret generic consul-gossip-encryption-key --from-literal=key="fwz6Zxm/TJfpyzOYHC9A1D+YJpCabdhU3FHU+ASWylI=" --namespace consul
+
+# Update the Corefile in the coredns configmap to forward dns queries to consul
+kubectl get services # in order to get the cluster-ip address of the consul-dns service 172.20.31.80
+
+kubectl apply -f ../configuration/Kubernetes/consul-helm/CoreDNS.yaml
+
+filebeat & k8s
+
+kubectl create -f ../configuration/Kubernetes/filebeat-config.yml
+# consider creating seperate namespace for it
+# consider using helm stable/filebeat https://github.com/helm/charts/tree/master/stable/filebeat
+
+prometheus & k8s
+# helm repo add stable https://charts.helm.sh/stable/
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm install prometheus prometheus-community/prometheus --create-namespace --namespace monitoring
+
+kubectl get endpoints -n monitoring (in order to get the endpoint of the prometheus-server)
+use the endpoint on order to add a data source in grafana. 

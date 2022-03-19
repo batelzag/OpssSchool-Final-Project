@@ -78,6 +78,14 @@ resource "aws_security_group" "consul_agents_sg" {
   }
 
   ingress {
+    description = "Allow gossip between consul servers and agents"
+    from_port   = 8301
+    to_port     = 8302
+    protocol    = "udp"
+    self        = true
+  }
+
+  ingress {
     description = "Allow DNS requests inside sg"
     from_port   = 8600
     to_port     = 8600
@@ -87,9 +95,9 @@ resource "aws_security_group" "consul_agents_sg" {
 
   ingress {
     description = "Allow DNS requests inside sg"
-    from_port   = 8500
-    to_port     = 8500
-    protocol    = "tcp"
+    from_port   = 8600
+    to_port     = 8600
+    protocol    = "udp"
     self        = true
   }
 
