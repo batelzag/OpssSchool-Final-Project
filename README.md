@@ -210,14 +210,13 @@ In order to set the environment you will need a linux mechine with the following
     ```
     <br />
 12.  Destroy and clean up the environment:
-    <br />
-    ```
-    kubectl delete service kandula-project-lb
-    kubectl delete -f ../configuration/Kubernetes/Filebeat/filebeat-config.yml -n logging
-    helm delete prometheus prometheus-community/prometheus -n monitoring
-    helm delete consul hashicorp/consul --set global.name=consul -n consul
-    terraform destroy -auto-approve
-    ```
+      ```
+      kubectl delete service kandula-project-lb
+      kubectl delete -f ../configuration/Kubernetes/Filebeat/filebeat-config.yml -n logging
+      helm delete prometheus prometheus-community/prometheus -n monitoring
+      helm delete consul hashicorp/consul --set global.name=consul -n consul
+      terraform destroy -auto-approve
+      ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
