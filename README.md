@@ -224,7 +224,21 @@ In order to set the environment you will need a linux mechine with the following
 
 <!-- VARIABLES -->
 ### Variables
-
+The main input variables (can be changed as of your choice):
+| Name                    | Description                                     | Type | Default value                                                               |
+|-------------------------|-------------------------------------------------|------|-----------------------------------------------------------------------------|
+|aws_region               | AWS region in which to deploy the infrastructure|string| us-east-1                                                                   |
+|vpc_cidr                 | VPC cidr block                                  |string| 10.0.0.0\16                                                                 |
+|number_of_public_subnets | Number of public subnets to create              |number| 2                                                                           |
+|number_of_private_subnets| Number of private subnets to create             |number| 2                                                                           |
+|key_name                 | Name of the pem key for the instances           |string|opsschool_project_key                                                        |
+|route53_domain_name      | Internal domain name for route53 hosted zone    |string|opsschool.internal                                                           |
+|default_tags             | Tags for the created reasources                 |string|evironment=development, owner_tag=opsschool-batel, project_tag= final-project|
+|alb_name                 | Application Load Balancer name                  |string|private-resources-alb                                                        |
+|instance_type            | EC2 instance type                               |string|mainly t2-micro                                                              |
+|number_of_instances      | Number of instances for every kind of server    |number|consul=3, jenkins-agents=2, rest=1                                           |     
+|instance_name            | Name of the instance on aws and on consul's DNS |string| diffrenet values                                                            |
+|cluster_name             | Name of the EKS cluster                         |string| project-eks                                                                 |
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [Kandula-App]: https://github.com/batelzag/kandula-project-app
