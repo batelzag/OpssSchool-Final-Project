@@ -8,7 +8,7 @@
   <a href="https://github.com/batelzag/OpssSchool-Final-Project
 ">
 
- ![d4c22a8b5f806a7a4cf3742ae6d3639e](/assets/d4c22a8b5f806a7a4cf3742ae6d3639e_kdnjldmpk.gif) 
+ ![Dumbo](/assets/d4c22a8b5f806a7a4cf3742ae6d3639e.gif) 
 
 <h3 align="center">OpsSchool Final Project</h3>
 
@@ -189,22 +189,19 @@ In order to set the environment you will need a linux mechine with the following
    ```
 
 9.  Set up Jenkins server - access the Jenkins UI URL and add the following credentials:
-    | ID                 | Value             | Description |
-    |--------------------|-------------------|-------------|
-    | Jenkins Agents     | username + ssh key| The jenkins agents\ nodes credentials for the use with jenkins server|
-    | Github             | username + ssh key| The Github credentials in order to use the private repository |
+    | ID                 | Value              | Description                                                                          |
+    |--------------------|--------------------|--------------------------------------------------------------------------------------|
+    | Jenkins Agents     | username + ssh key | The jenkins agents\ nodes credentials for the use with jenkins server                |
+    | Github             | username + ssh key | The Github credentials in order to use the private repository                        |
     | Dockerhub          | username + password| The Docker hub credentials in order to upload Kandula's image to Dockerhub's registry|
-    | K8s                | config map         | The config map file in order to deploy kandula's app on the EKS cluster|
+    | K8s                | config map         | The config map file in order to deploy kandula's app on the EKS cluster              |
 
     Test Kandula's App:
-    Create scm pipline and use the ```test-kandula.groovy``` file on the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.
-    <br />
+    Create scm pipline and use the ```test-kandula.groovy``` file on the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.<br />
     Create a Database schema for Kandula's app:
-    Create scm pipline and use the ```db-kandula.groovy``` file on the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.
-    <br />
+    Create scm pipline and use the ```db-kandula.groovy``` file on the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.<br />
     Deploy Kandula to K8s:
-    Create scm pipline and use the deploy-kandula.groovy file on the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.
-    <br />
+    Create scm pipline and use the deploy-kandula.groovy file on the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.<br />
     Now Kandula is up and running and can be accessed on this address:
     ```
     kubectl get svc -o wide
