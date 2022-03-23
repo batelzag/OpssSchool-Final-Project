@@ -204,13 +204,13 @@ In order to set the environment you will need a linux mechine with the following
     * Create a Database schema for Kandula's app:
     Create scm pipline and use the ```db-kandula.groovy``` file from the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.
     * Create scm pipline and use the deploy-kandula.groovy file from the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.
-<br />  
+    <br />  
     Now Kandula is up and running and can be accessed from the loadbalancer service endpoint:
       ```
       kubectl get svc -o wide
       ```
     <br />
-1.  Destroy and clean up the environment:
+12.  Destroy and clean up the environment:
     <br />
     ```
     kubectl delete service kandula-project-lb
