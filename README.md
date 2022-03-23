@@ -217,6 +217,7 @@ In order to set the environment you will need a linux mechine with the following
     helm delete prometheus prometheus-community/prometheus -n monitoring
     helm delete consul hashicorp/consul --set global.name=consul -n consul
     terraform destroy
+    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
