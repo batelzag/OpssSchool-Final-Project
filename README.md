@@ -209,7 +209,7 @@ In order to set the environment you will need a linux mechine with the following
     kubectl get svc -o wide
     ```
     <br />
-12.  Destroy and clean up the environment:
+12.  Clean up and destroy the environment:
       ```
       kubectl delete service kandula-project-lb
       kubectl delete -f ../configuration/Kubernetes/Filebeat/filebeat-config.yml -n logging
