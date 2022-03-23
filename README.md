@@ -197,22 +197,21 @@ In order to set the environment you will need a linux mechine with the following
     | Dockerhub          | username + password| The Docker hub credentials in order to upload Kandula's image to Dockerhub's registry|
     | K8s                | config map         | The config map file in order to deploy kandula's app on the EKS cluster|
     <br />
-
-    Test Kandula's App:
-    Create scm pipline and use the ```test-kandula.groovy``` file on the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.
+10. Test Kandula's App:
+    Create scm pipline and use the ```test-kandula.groovy``` file from the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.
     <br />
-    Create a Database schema for Kandula's app:
-    Create scm pipline and use the ```db-kandula.groovy``` file on the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.
+11. Deploy Kandula to K8s:
+    * Create a Database schema for Kandula's app:
+    Create scm pipline and use the ```db-kandula.groovy``` file from the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.
     <br />
-    Deploy Kandula to K8s:
-    Create scm pipline and use the deploy-kandula.groovy file on the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.
+    * Create scm pipline and use the deploy-kandula.groovy file from the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.<br />
+    Now Kandula is up and running and can be accessed from the loadbalancer service endpoint:
     <br />
-    Now Kandula is up and running and can be accessed on the loadbalancer service endpoint:
-    ```
-    kubectl get svc -o wide
-    ```
+      ```
+      kubectl get svc -o wide
+      ```
     <br />
-10. Destroy and clean up the environment:
+12. Destroy and clean up the environment:
     <br />
     ```
     kubectl delete service kandula-project-lb
