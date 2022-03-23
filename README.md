@@ -162,33 +162,30 @@ In order to set the environment you will need a linux mechine with the following
    <br />
 8. Set up the EKS cluster:
    <br />
-   ```
-   aws eks --region=us-east-1 update-kubeconfig --name <cluster_name>
-   kubectl get configmap aws-auth -n kube-system -o yaml
-   ```
-   Add the ARN of the jenkins agents eks access role to the config map:
-   <br />
-   ```
-   kubectl edit configmap aws-auth -n kube-system
-   ```
-   <br />
-   Set cosul on K8s:
-   ```
-   helm repo add hashicorp https://helm.releases.hashicorp.com
-   helm install consul hashicorp/consul --set global.name=consul -n consul -f ../configuration/Kubernetes/consul-helm/values.yaml
-   kubectl apply -f ../configuration/Kubernetes/consul-helm/CoreDNS.yaml -n consul
-   ```
-   <br />
-   Set prometheus on K8s:
-   ```
-   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-   helm install prometheus prometheus-community/prometheus -n monitoring
-   ```
-   <br />
-   Set filebeat on K8s:
-   ```
-   kubectl create -f ../configuration/Kubernetes/Filebeat/filebeat-config.yml -n logging
-   ```
+   * Update the cofigmap:
+      ```
+      aws eks --region=us-east-1 update-kubeconfig --name <cluster_name>
+      kubectl get configmap aws-auth -n kube-system -o yaml
+      ```
+   * Add the ARN of the jenkins agents eks access role to the config map:
+      ```
+      kubectl edit configmap aws-auth -n kube-system
+      ```
+   * Set cosul on K8s:
+      ```
+      helm repo add hashicorp https://helm.releases.hashicorp.com
+      helm install consul hashicorp/consul --set global.name=consul -n consul -f ../configuration/Kubernetes/consul-helm/values.yaml
+      kubectl apply -f ../configuration/Kubernetes/consul-helm/CoreDNS.yaml -n consul
+      ```
+   * Set prometheus on K8s:
+      ```
+      helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+      helm install prometheus prometheus-community/prometheus -n monitoring
+      ```
+   * Set filebeat on K8s:
+      ```
+      kubectl create -f ../configuration/Kubernetes/Filebeat/filebeat-config.yml -n logging
+      ```
    <br />
 
 9.  Set up Jenkins server - access the Jenkins UI and add the following credentials:
