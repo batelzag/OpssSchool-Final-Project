@@ -49,9 +49,6 @@ helm repo add hashicorp https://helm.releases.hashicorp.com
 # Install Helm chart for consul
 helm install consul hashicorp/consul --set global.name=consul --create-namespace --namespace consul -f ../configuration/Kubernetes/consul-helm/values.yaml
 
-# Create gossip encryption secret
-kubectl create secret generic consul-gossip-encryption-key --from-literal=key="fwz6Zxm/TJfpyzOYHC9A1D+YJpCabdhU3FHU+ASWylI=" --namespace consul
-
 # Update the Corefile in the coredns configmap to forward dns queries to consul
 kubectl get services # in order to get the cluster-ip address of the consul-dns service 172.20.31.80
 
