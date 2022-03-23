@@ -216,7 +216,7 @@ In order to set the environment you will need a linux mechine with the following
     kubectl delete -f ../configuration/Kubernetes/Filebeat/filebeat-config.yml -n logging
     helm delete prometheus prometheus-community/prometheus -n monitoring
     helm delete consul hashicorp/consul --set global.name=consul -n consul
-    terraform destroy
+    terraform destroy -auto-approve
     ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
