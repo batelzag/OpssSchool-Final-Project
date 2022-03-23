@@ -202,11 +202,14 @@ In order to set the environment you will need a linux mechine with the following
     <br />
 
     Test Kandula's App:
-    Create scm pipline and use the ```test-kandula.groovy``` file on the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.<br />
+    Create scm pipline and use the ```test-kandula.groovy``` file on the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.
+    <br />
     Create a Database schema for Kandula's app:
-    Create scm pipline and use the ```db-kandula.groovy``` file on the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.<br />
+    Create scm pipline and use the ```db-kandula.groovy``` file on the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.
+    <br />
     Deploy Kandula to K8s:
-    Create scm pipline and use the deploy-kandula.groovy file on the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.<br />
+    Create scm pipline and use the deploy-kandula.groovy file on the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.
+    <br />
     Now Kandula is up and running and can be accessed on the loadbalancer service endpoint:
     ```
     kubectl get svc -o wide
