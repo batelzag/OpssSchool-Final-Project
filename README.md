@@ -56,7 +56,7 @@ A small production environment for a highly available web application <a href="h
 <!-- Prerequisites -->
 ## Prerequisites
 
-In order to set the environment you will need a linux mechine with the following installed:
+In order to set the environment you will need a linux machine with the following installed:
 * <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Teraform cli</a>
 * <a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html">AWS cli</a>
 * <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/">kubectl</a>
