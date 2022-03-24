@@ -88,14 +88,14 @@ In order to set the environment you will need a linux mechine with the following
    <br />
    ```
    # AWS
-   aws_access_key_id       = "xxxxxxxxxx"
-   aws_secret_access_key   = "xxxxxxxxxx"
-   db_username             = "xxxxxxxxxx"
-   db_password             = "xxxxxxxxxx"
+   aws_access_key_id       = "EXAMPLEACCESSKEY"
+   aws_secret_access_key   = "EXAMPLESECRETKEY"
+   db_username             = "example"
+   db_password             = "example12345"
 
    # Gmail
-   gmail_address           = "xxxx@gmail.com"
-   gmail_app_code          = "xxxxxx"
+   gmail_address           = "example@gmail.com"
+   gmail_app_code          = "EXAMPLE"
 
    # Slack
    slack_notification_webhook_url = "https://hooks.slack.com/..."
