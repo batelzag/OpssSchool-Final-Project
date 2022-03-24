@@ -93,10 +93,6 @@ In order to set the environment you will need a linux mechine with the following
    db_username             = "example"
    db_password             = "example12345"
 
-   # Gmail
-   gmail_address           = "example@gmail.com"
-   gmail_app_code          = "EXAMPLE"
-
    # Slack
    slack_notification_webhook_url = "https://hooks.slack.com/..."
    ```
