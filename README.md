@@ -138,7 +138,7 @@ In order to set the environment you will need a linux mechine with the following
    <br />
    ```
    cd /OpssSchool-Final-Project/infrastructure
-   terraform destroy -auto-approve -var-file=sensitive.tfvars 
+   terraform destroy -auto-approve -var-file=<file_name>.tfvars 
    ```
     >**📝 Please Note:**
    If you changed the name of the S3 bucket on step 6, you will need to change it also on the variables.tf file on this dir.<br />
@@ -215,7 +215,7 @@ In order to set the environment you will need a linux mechine with the following
       kubectl delete -f ../configuration/Kubernetes/Filebeat/filebeat-config.yml -n logging
       helm delete prometheus prometheus-community/prometheus -n monitoring
       helm delete consul hashicorp/consul -n consul
-      terraform destroy -auto-approve -var-file=sensitive.tfvars
+      terraform destroy -auto-approve -var-file=<file_name>.tfvars
       ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
