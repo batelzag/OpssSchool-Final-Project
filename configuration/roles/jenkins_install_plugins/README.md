@@ -13,9 +13,9 @@ Role Variables
 
 The role accepts jenkins_plugin_list as a variable, and the value reffers to the jenkins plugins you wish to install on the jenkins server.
 
-| Variable                | Required | Default|
-|-------------------------|----------|---------|---------------------------|------------------------------------------|
-| jenkins_plugin_list                     | yes       | locale, workflow-aggregator, ssh-slaves, ssh-credentials, credentials, github, github-branch-source, versionnumber, docker-plugin, docker-workflow, kubernetes,kubernetes-cd, kubernetes-credentials,aws-credentials, blueocean, cloudbees-disk-usage-simple, prometheus]   |
+| Variable                | Required | Default |
+|-------------------------|----------|---------|
+| jenkins_plugin_list     | yes      | locale, workflow-aggregator, ssh-slaves, ssh-credentials, credentials, github, github-branch-source, versionnumber, docker-plugin, docker-workflow, kubernetes,kubernetes-cd, kubernetes-credentials,aws-credentials, blueocean, cloudbees-disk-usage-simple, prometheus   |
 
 Dependencies
 ------------
