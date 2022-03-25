@@ -134,7 +134,7 @@ In order to set the environment you will need a linux machine with the following
    <br />
    ```
    cd /OpssSchool-Final-Project/infrastructure
-   terraform destroy -auto-approve -var-file=<file_name>.tfvars 
+   terraform apply -auto-approve -var-file=<file_name>.tfvars 
    ```
     >**📝 Please Note:**
    If you changed the name of the S3 bucket on step 6, you will need to change it also on the variables.tf file on this dir.<br />
