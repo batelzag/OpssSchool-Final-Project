@@ -171,7 +171,7 @@ In order to set the environment you will need a linux machine with the following
       ```
       helm repo add hashicorp https://helm.releases.hashicorp.com
       helm install consul hashicorp/consul --set global.name=consul -n consul -f ../configuration/Kubernetes/consul-helm/values.yaml
-      kubectl apply -f ../configuration/Kubernetes/consul-helm/CoreDNS.yaml -n consul
+      kubectl apply -f ../configuration/Kubernetes/consul-helm/CoreDNS.yaml
       ```
    * Set prometheus on K8s:
       ```
