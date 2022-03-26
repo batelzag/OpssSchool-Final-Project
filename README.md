@@ -88,8 +88,6 @@ In order to set the environment you will need a linux machine with the following
    <br />
    ```
    # AWS
-   aws_access_key_id       = "EXAMPLEACCESSKEY"
-   aws_secret_access_key   = "EXAMPLESECRETKEY"
    db_username             = "example"
    db_password             = "example12345"
 
