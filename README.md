@@ -208,6 +208,7 @@ In order to set the environment you will need a linux machine with the following
 12.  Clean up and destroy the environment:
       ```
       kubectl delete service kandula-project-lb
+      ubectl delete kandula-final-project-deployment
       kubectl delete -f ../configuration/Kubernetes/Filebeat/filebeat-config.yml -n logging
       helm delete prometheus prometheus-community/prometheus -n monitoring
       helm delete consul hashicorp/consul -n consul
