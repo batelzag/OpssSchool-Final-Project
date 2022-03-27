@@ -4,7 +4,6 @@
       {
         "Effect": "Allow",
         "Action": [
-            "ec2:Describe*",
             "eks:*",
             "sts:AssumeRole"
         ],

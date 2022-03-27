@@ -225,3 +225,26 @@ resource "aws_security_group" "elk_server_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+# Create a dedicated SG for db Server
+resource "aws_security_group" "db_server_sg" {
+  name          = "db-server"
+  description   = "Allow db server inbound traffic"
+  vpc_id        = aws_vpc.project-vpc.id
+
+  ingress {
+    description = "Allow UI access from the world"
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    security_groups = [aws_security_group.consul_agents_sg.id]
+  }
+
+  egress {
+    description = "Allow all outgoing traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}

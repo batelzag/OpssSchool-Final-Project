@@ -34,6 +34,12 @@ output "jenkins_server_sg" {
     description = "the id of the security group assigned to the jenkins server"
 }
 
+# Output the jenkins eks access arn
+output "jenkins_eks_role" {
+    value       = aws_iam_role.jenkins-access-eks-role.arn
+    description = "the arn of the jenkins eks access role"
+}
+
 # Output the consul servers security group id
 output "consul_servers_sg" {
     value       = aws_security_group.consul_servers_sg.id
@@ -70,6 +76,12 @@ output "bastion_server_sg" {
     description = "the id of the security group assigned to the bastion server"
 }
 
+# Output the db server security group id
+output "db_server_sg" {
+    value       = aws_security_group.db_server_sg.id
+    description = "the id of the security group assigned to the db server"
+}
+
 # Output the consul agents iam profile
 output "consul-join-profile" {
     value       = aws_iam_instance_profile.consul-join-profile.name
@@ -82,7 +94,13 @@ output "jenkins-access-eks-profile" {
     description = "the name of IAM profile to attach to the instance"
 }
 
+# Output the jenkins agents iam profile
+output "grafana-cloudwatch-profile" {
+    value       = aws_iam_instance_profile.grafana-cloudwatch-profile.name
+    description = "the name of IAM profile to attach to the instance"
+}
+
 # Output the name of the pem key that was created
 output "pem_key_name" {
-    value = aws_key_pair.mid_project_key.key_name
+    value = aws_key_pair.project_key.key_name
 }
