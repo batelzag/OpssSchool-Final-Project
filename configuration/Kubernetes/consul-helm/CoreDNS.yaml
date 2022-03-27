@@ -1,8 +1,11 @@
-# Please edit the object below. Lines beginning with a '#' will be ignored,
-# and an empty file will abort the edit. If an error occurs while saving this file will be
-# reopened with the relevant failures.
-#
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    eks.amazonaws.com/component: coredns
+    k8s-app: kube-dns
+  name: coredns
+  namespace: kube-system
 data:
   Corefile: |
     .:53 {
@@ -24,16 +27,3 @@ data:
       cache 30
       forward . 172.20.10.10
     }
-kind: ConfigMap
-metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","data":{"Corefile":".:53 {\n    errors\n    health\n    kubernetes cluster.local in-addr.arpa ip6.arpa {\n      pods insecure\n      fallthrough in-addr.arpa ip6.arpa\n    }\n    prometheus :9153\n    forward . /etc/resolv.conf\n    cache 30\n    loop\n    reload\n    loadbalance\n}\n"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"eks.amazonaws.com/component":"coredns","k8s-app":"kube-dns"},"name":"coredns","namespace":"kube-system"}}
-  creationTimestamp: "2022-03-18T11:44:03Z"
-  labels:
-    eks.amazonaws.com/component: coredns
-    k8s-app: kube-dns
-  name: coredns
-  namespace: kube-system
-  resourceVersion: "249"
-  uid: 0d233306-732f-4674-916e-5651cc4a5c0c

@@ -1,11 +1,10 @@
-
 # Available parameters and their default values for the Consul chart.
 
 # Holds values that affect multiple components of the chart.
 global:
   enabled: false
   image: "hashicorp/consul:1.11.3"
-  datacenter: mid-project
+  datacenter: final-project
   gossipEncryption:
     # secretName is the name of the Kubernetes secret that holds the gossip
     # encryption key. The secret must be in the same namespace that Consul is installed into.

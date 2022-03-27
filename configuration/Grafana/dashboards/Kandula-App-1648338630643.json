@@ -1,0 +1,190 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Displaying Kandula's metrics",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "description": "The total number of hits\\requests for all pages",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PE60209C446E126D3"
+          },
+          "exemplar": true,
+          "expr": "number_of_requests_total{endpoint=\"home\",method=\"GET\"}",
+          "format": "table",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "Home"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PE60209C446E126D3"
+          },
+          "exemplar": true,
+          "expr": "number_of_requests_total{endpoint=\"instances\",method=\"GET\"}",
+          "format": "table",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "Instances"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PE60209C446E126D3"
+          },
+          "exemplar": true,
+          "expr": "number_of_requests_total{endpoint=\"scheduler\",method=\"GET\"}",
+          "format": "table",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "Scheduler"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PE60209C446E126D3"
+          },
+          "exemplar": true,
+          "expr": "number_of_requests_total{endpoint=\"metrics\",method=\"GET\"}",
+          "format": "table",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "Metrics"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PE60209C446E126D3"
+          },
+          "exemplar": true,
+          "expr": "number_of_requests_total{endpoint=\"health\",method=\"GET\"}",
+          "format": "table",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "Health"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PE60209C446E126D3"
+          },
+          "exemplar": true,
+          "expr": "number_of_requests_total{endpoint=\"about\",method=\"GET\"}",
+          "format": "table",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "About"
+        }
+      ],
+      "title": "Total number of requests - All pages",
+      "type": "piechart"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 34,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-3h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "Kandula-App",
+  "uid": "164ne4s7k",
+  "version": 3,
+  "weekStart": ""
+}

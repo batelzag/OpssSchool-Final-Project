@@ -1,0 +1,25 @@
+plugin: aws_ec2
+
+regions:       
+  - us-east-1 
+  
+# Filter all instances with their 'Project' tag set to 'final-project'
+filters:
+  # tag:Project:
+  #   - final-project
+# Filter all instances with their state as `running`
+  instance-state-name: running
+
+groups:
+  jenkins_server: "'jenkins-server' in tags.Name"
+  jenkins_agents: "'jenkins-agent' in tags.Name"
+  consul_servers: "'consul-server' in tags.Name" 
+  consul_agents: "'consul-server' not in tags.Name"
+  ansible_server: "'ansible-server' in tags.Name"
+  grafana_server: "'grafana-server' in tags.Name"
+  prometheus_server: "'prometheus-server' in tags.Name"
+  elk_server: "'elk-server' in tags.Name"
+  db_server: "'db-server' in tags.Name"
+
+# hostnames:
+  # - network-interface.addresses.private-ip-address

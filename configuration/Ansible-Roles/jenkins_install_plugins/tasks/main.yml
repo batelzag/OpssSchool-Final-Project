@@ -1,0 +1,48 @@
+---
+- name: get remote file contents - jenkins admin password
+  command: "cat /var/lib/jenkins/secrets/initialAdminPassword"
+  register: jenkins_admin_password
+
+- name: Install jenkins plugins from the specified list
+  jenkins_plugin:
+    name: "{{ item }}"
+    state: latest
+    url_username: admin
+    url_password: "{{ jenkins_admin_password.stdout }}"
+  with_items: "{{ jenkins_plugin_list }}"
+  register: installed_plugins
+
+- name: Initialize jenkins_restart_required var
+  set_fact:
+    jenkins_restart_required: no
+
+- name: Check if restart is required by any of the installed plugins
+  set_fact:
+    jenkins_restart_required: yes
+    when: item.changed
+  with_items: "{{ installed_plugins.results }}"
+
+# - name: Restart Jenkins container if required
+#   docker_container:
+#     name: jenkins_server
+#     image: jenkins/jenkins
+#     state: started
+#     restart: yes
+#     restart_policy: "always"
+#     ports:
+#       - "8080:8080"
+#       - "50000:50000"
+#     volumes:
+#       - /home/ubuntu/jenkins_home:/var/jenkins_home
+#       - /var/run/docker.sock:/var/run/docker.sock
+#   when: jenkins_restart_required
+
+- name: Restart Jenkins if required
+  service:
+    name: jenkins
+    state: restarted
+  when: jenkins_restart_required
+
+- name: Print jenkins admin password in order to login to the ui
+  debug:
+    var: jenkins_admin_password.stdout
