@@ -31,7 +31,7 @@ resource "aws_instance" "ec2-instance" {
   }
 
   provisioner "file" {
-    source      = "../configuration/roles/jenkins_install_plugins" 
+    source      = "../configuration/Ansible-Roles/jenkins_install_plugins" 
     destination = "/home/ubuntu"
 
     connection {   

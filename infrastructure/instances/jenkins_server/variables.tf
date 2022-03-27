@@ -1,7 +1,7 @@
 # EC2 Instance type
 variable "instance_type" {
   description = "The type of EC2 instance"
-  default     = "t2.micro"
+  default     = "t3.micro"
   type        = string
 }
 

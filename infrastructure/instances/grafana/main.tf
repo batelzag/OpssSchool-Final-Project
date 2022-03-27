@@ -29,4 +29,19 @@ resource "aws_instance" "ec2-instance" {
       bastion_private_key = file(var.key_name)    
     }  
 	}
+
+    provisioner "file" {
+    source      = "../configuration/Grafana" 
+    destination = "/home/ubuntu"
+
+    connection {   
+      host        = self.private_ip
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file(var.key_name) 
+      bastion_host = "${var.bastion_public_ip}"
+      bastion_user = "ubuntu"
+      bastion_private_key = file(var.key_name)    
+    }  
+	}
 }

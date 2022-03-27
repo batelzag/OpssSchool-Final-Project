@@ -1,26 +1,26 @@
 
 data "template_file" "consul_agent" {
-    template    = "${file("../configuration/templates/consul_agent.sh.tpl")}"
+    template    = "${file("../configuration/Templates/consul_agent.sh.tpl")}"
     vars        = {
         consul_version  = "1.11.3"
-        datacenter_name = "mid-project"
+        datacenter_name = "final-project"
         node_name       = "${var.instance_name}"
     }
 }
 
 data "template_file" "bastion_server" {
-    template  = "${file("../configuration/templates/bastion_server.sh.tpl")}"
+    template  = "${file("../configuration/Templates/bastion_server.sh.tpl")}"
 }
 
 data "template_file" "node_exporter" {
-    template = "${file("../configuration/templates/node_exporter.sh.tpl")}"
+    template = "${file("../configuration/Templates/node_exporter.sh.tpl")}"
     vars      = {
         node_exporter_version = "0.18.0"
     }
 }
 
 data "template_file" "filebeat" {
-    template = "${file("../configuration/templates/filebeat.sh.tpl")}"
+    template = "${file("../configuration/Templates/filebeat.sh.tpl")}"
     vars      = {
         filebeat_version = "7.11.0"
     }
@@ -31,12 +31,12 @@ data "template_cloudinit_config" "bastion_server" {
         content = "${data.template_file.consul_agent.rendered}"
     }
     part {
-        content = "${data.template_file.bastion_server.rendered}"
+        content = "${data.template_file.filebeat.rendered}"
     }
     part {
         content = "${data.template_file.node_exporter.rendered}"
     }
     part {
-        content = "${data.template_file.filebeat.rendered}"
+        content = "${data.template_file.bastion_server.rendered}"
     }
 }
