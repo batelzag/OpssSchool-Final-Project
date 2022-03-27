@@ -192,11 +192,11 @@ In order to set the environment you will need a linux machine with the following
     | K8s                | config map         | The config map file in order to deploy kandula's app on the EKS cluster|
     <br />
 10. Test Kandula's App:
-    Create a scm pipline and use the ```test-kandula.groovy``` file from the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.
+    Create a scm pipline and use the ```test-and-build-kandula.groovy``` file from the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a> (in the pipeline folder).
     <br />
 11. Deploy Kandula to K8s:
-    * Create a Database schema for Kandula's app - Create a scm pipline and use the ```db-kandula.groovy``` file from the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.
-    * Deploy to K8s - Create a scm pipline and use the ```deploy-kandula.groovy``` file from the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a>.
+    * Create a Database schema for Kandula's app - Create a scm pipline and use the ```configure-db-kandula.groovy``` file from the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a> (in the pipeline folder).
+    * Deploy to K8s - Create a scm pipline and use the ```deploy-kandula.groovy``` file from the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a> (in the pipeline folder).
   
     **Now Kandula is up and running and can be accessed from the loadbalancer service endpoint:**
     ```
