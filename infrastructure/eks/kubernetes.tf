@@ -8,7 +8,7 @@ provider "kubernetes" {
   token                  = data.aws_eks_cluster_auth.eks.token
 }
 
-resource "kubernetes_service_account" "opsschool-sa" {
+resource "kubernetes_service_account" "kandula-sa" {
   metadata {
     name      = local.k8s_service_account_name
     namespace = local.k8s_service_account_namespace

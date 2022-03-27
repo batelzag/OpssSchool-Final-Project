@@ -9,7 +9,7 @@ module "eks" {
   enable_irsa = true
   
   tags = {
-    Environment = "mid-project"
+    Environment = "final-project"
     GithubRepo  = "terraform-aws-eks"
     GithubOrg   = "terraform-aws-modules"
   }
@@ -20,14 +20,14 @@ module "eks" {
       instance_type                 = "t3.medium"
       additional_userdata           = "echo foo bar"
       asg_desired_capacity          = 1
-      additional_security_group_ids = [aws_security_group.all_worker_mgmt.id, aws_security_group_prometheus_k8s_server_sg.id, "${var.consul_agents_sg}"]
+      additional_security_group_ids = [aws_security_group.all_worker_mgmt.id, aws_security_group.prometheus_k8s_server_sg.id, "${var.consul_agents_sg}"]
     },
     {
       name                          = "worker-group-2"
       instance_type                 = "t3.medium"
       additional_userdata           = "echo foo bar"
       asg_desired_capacity          = 1
-      additional_security_group_ids = [aws_security_group.all_worker_mgmt.id, aws_security_group_prometheus_k8s_server_sg.id, "${var.consul_agents_sg}"]
+      additional_security_group_ids = [aws_security_group.all_worker_mgmt.id, aws_security_group.prometheus_k8s_server_sg.id, "${var.consul_agents_sg}"]
     }
   ]
 
