@@ -171,10 +171,10 @@ In order to set the environment you will need a linux machine with the following
       helm install consul hashicorp/consul --set global.name=consul -n consul -f ../configuration/Kubernetes/consul-helm/values.yaml
       kubectl apply -f ../configuration/Kubernetes/consul-helm/CoreDNS.yaml
       ```
-   * Set prometheus on K8s:
+   * Set Node Exporter on K8s:
       ```
       helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-      helm install prometheus prometheus-community/prometheus -n monitoring
+      helm install prometheus prometheus-community/prometheus-node-exporter -n monitoring
       ```
    * Set filebeat on K8s:
       ```
@@ -208,7 +208,7 @@ In order to set the environment you will need a linux machine with the following
       kubectl delete service kandula-project-lb
       ubectl delete kandula-final-project-deployment
       kubectl delete -f ../configuration/Kubernetes/Filebeat/filebeat-config.yml -n logging
-      helm delete prometheus prometheus-community/prometheus -n monitoring
+      helm delete prometheus prometheus-community/prometheus-node-exporter -n monitoring
       helm delete consul hashicorp/consul -n consul
       terraform destroy -auto-approve -var-file=<file_name>.tfvars
       ```
