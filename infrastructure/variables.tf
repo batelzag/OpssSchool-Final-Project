@@ -4,10 +4,10 @@ variable "aws_region" {
   default         = "us-east-1"
 }
 
-# The S3 bucket name to create
+# The S3 bucket name to store terraform's remote state
 variable s3_bucket_name {
   type            = string
-  default         = "terraformstate-environments/Development/" #${random_string.suffix.result} - 
+  default         = "terraformstate-environments/Development/" 
   description     = "the name of s3 bucket to store the remote state"
 }
 
@@ -29,5 +29,17 @@ variable "owner_tag" {
 variable "project_tag" {
     type          = string
     description   = "what is the project about"
-    default       = "mid-project"
+    default       = "final-project"
+}
+
+variable "db_username" {
+  description = "Database administrator username"
+  type        = string
+  sensitive   = true
+}
+
+variable "db_password" {
+  description = "Database administrator password"
+  type        = string
+  sensitive   = true
 }

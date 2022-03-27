@@ -40,10 +40,14 @@ output "kibana_url" {
   value       = "http://${module.alb.alb_dns_name}:5601"
 }
 
-# # The EKS cluster name
-# output "cluster_name" {
-#   description = "Kubernetes Cluster Name"
-#   value       = module.eks.cluster_name
-# }
+# The EKS cluster name
+output "cluster_name" {
+  description = "Kubernetes Cluster Name"
+  value       = module.eks.cluster_name
+}
 
-# maybe add also the eks endpoint
+# The ARN of the Jenkins eks access role
+output "jenkins_eks_role_arn" {
+  description = "Jenkins eks access role arn"
+  value       = module.vpc.jenkins_eks_role
+}
