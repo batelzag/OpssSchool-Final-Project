@@ -1,6 +1,6 @@
 # Create Application Load Balancer for access from the world to resources on the private subnets (consul & jenkins & prometheus & grafana & kibana)
 resource "aws_lb" "private-resources-alb" {
-  name                = "private-resources-alb"
+  name                = "${var.alb_name}"
   internal            = false
   load_balancer_type  = "application"
   subnets             = var.subnets_id
@@ -134,6 +134,7 @@ resource "aws_lb_target_group" "grafana-server-tg" {
   health_check {
       port     = 3000
       protocol = "HTTP"
+      # path     = "/api/health"
   }
 
   # tags = {
