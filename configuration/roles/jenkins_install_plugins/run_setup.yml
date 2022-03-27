@@ -1,6 +1,0 @@
----
-- name: Install jenkins plugins
-  hosts: jenkins_server
-  become: true
-  roles:
-    - jenkins_install_plugins
