@@ -180,9 +180,6 @@ In order to set the environment you will need a linux machine with the following
       ```
       kubectl delete service kandula-project-lb
       kubectl delete deploy kandula-final-project-deployment
-      kubectl delete -f ../configuration/Kubernetes/Filebeat/filebeat-config.yml -n logging
-      helm delete prometheus prometheus-community/prometheus-node-exporter -n monitoring
-      helm delete consul hashicorp/consul -n consul
       terraform destroy -auto-approve -var-file=<file_name>.tfvars
       ```
 
