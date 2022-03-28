@@ -162,7 +162,6 @@ In order to set the environment you will need a linux machine with the following
     | Jenkins Agents     | username + ssh key| The jenkins agents\ nodes credentials for the use with jenkins server|
     | Github             | username + ssh key| The Github credentials in order to use the private repository |
     | Dockerhub          | username + password| The Docker hub credentials in order to upload Kandula's image to Dockerhub's registry|
-    | K8s                | config map         | The config map file in order to deploy kandula's app on the EKS cluster|
     <br />
 9. Test Kandula's App:
     Create a scm pipline and use the ```test-and-build-kandula.groovy``` file from the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a> (in the pipeline folder).
