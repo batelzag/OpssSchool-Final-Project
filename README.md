@@ -154,35 +154,8 @@ In order to set the environment you will need a linux machine with the following
    |EKS cluster               | Cluster Name    |
    |Jenkins Agents EKS access | Role ARN        |
    <br />
-8. Set up the EKS cluster:
-   <br />
-   * Update the cofigmap:
-      ```
-      aws eks --region=us-east-1 update-kubeconfig --name <cluster_name>
-      kubectl get configmap aws-auth -n kube-system -o yaml
-      ```
-   * Add the ARN of the jenkins agents eks access role to the config map:
-      ```
-      kubectl edit configmap aws-auth -n kube-system
-      ```
-   * Set cosul on K8s:
-      ```
-      helm repo add hashicorp https://helm.releases.hashicorp.com
-      helm install consul hashicorp/consul --set global.name=consul -n consul -f ../configuration/Kubernetes/consul-helm/values.yaml
-      kubectl apply -f ../configuration/Kubernetes/consul-helm/CoreDNS.yaml
-      ```
-   * Set Node Exporter on K8s:
-      ```
-      helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-      helm install prometheus prometheus-community/prometheus-node-exporter -n monitoring
-      ```
-   * Set filebeat on K8s:
-      ```
-      kubectl create -f ../configuration/Kubernetes/Filebeat/filebeat-config.yml -n logging
-      ```
-   <br />
 
-9.  Set up Jenkins server - access the Jenkins UI and add the following credentials:
+8.  Set up Jenkins server - access the Jenkins UI and add the following credentials:
     <br />
     | ID                 | Value             | Description |
     |--------------------|-------------------|-------------|
@@ -191,10 +164,10 @@ In order to set the environment you will need a linux machine with the following
     | Dockerhub          | username + password| The Docker hub credentials in order to upload Kandula's image to Dockerhub's registry|
     | K8s                | config map         | The config map file in order to deploy kandula's app on the EKS cluster|
     <br />
-10. Test Kandula's App:
+9. Test Kandula's App:
     Create a scm pipline and use the ```test-and-build-kandula.groovy``` file from the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a> (in the pipeline folder).
     <br />
-11. Deploy Kandula to K8s:
+10. Deploy Kandula to K8s:
     * Create a Database schema for Kandula's app - Create a scm pipline and use the ```configure-db-kandula.groovy``` file from the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a> (in the pipeline folder).
     * Deploy to K8s - Create a scm pipline and use the ```deploy-kandula.groovy``` file from the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a> (in the pipeline folder).
   
@@ -203,7 +176,7 @@ In order to set the environment you will need a linux machine with the following
     kubectl get svc -o wide
     ```
     <br />
-12.  Clean up and destroy the environment:
+11.  Clean up and destroy the environment:
       ```
       kubectl delete service kandula-project-lb
       kubectl delete deploy kandula-final-project-deployment
