@@ -84,15 +84,12 @@ In order to set the environment you will need a linux machine with the following
    export AWS_SECRET_ACCESS_KEY=EXAMPLESECRETKEY
    export AWS_DEFAULT_REGION=us-east-1
    ```
-3. Use the example.tfvars file and enter the username and password that you wish to set for the RDS insance, and the AWS credentials for the kandula app user:
+3. Use the example.tfvars file and enter the username and password that you wish to set for the RDS instance:
    <br />
    ```
    # AWS
    db_username             = "example"
    db_password             = "example12345"
-
-   # Slack
-   slack_notification_webhook_url = "https://hooks.slack.com/..."
    ```
 4. Optional: scan terraform's configuration files
    for vulnerabilities with <a href="https://docs.snyk.io/snyk-cli/install-the-snyk-cli">snyk</a>:
@@ -152,16 +149,17 @@ In order to set the environment you will need a linux machine with the following
    |Grafana UI                | URL Link        |
    |Kibana UI                 | URL Link        |
    |EKS cluster               | Cluster Name    |
-   |Jenkins Agents EKS access | Role ARN        |
    <br />
 
 8.  Set up Jenkins server - access the Jenkins UI and add the following credentials:
     <br />
-    | ID                 | Value             | Description |
-    |--------------------|-------------------|-------------|
-    | Jenkins Agents     | username + ssh key| The jenkins agents\ nodes credentials for the use with jenkins server|
-    | Github             | username + ssh key| The Github credentials in order to use the private repository |
+    | ID                 | Value              | Description |
+    |--------------------|--------------------|-------------|
+    | Jenkins Agents     | username + ssh key | The jenkins agents\ nodes credentials for the use with jenkins server|
+    | Github             | username + ssh key | The Github credentials in order to use the private repository |
     | Dockerhub          | username + password| The Docker hub credentials in order to upload Kandula's image to Dockerhub's registry|
+    | Slack              | token              | Slack token in order to set Slack notifications|
+    | Postgres DB        | username + password| The username and password for accessing the Postgres DB|
     <br />
 9. Test Kandula's App:
     Create a scm pipline and use the ```test-and-build-kandula.groovy``` file from the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a> (in the pipeline folder).
@@ -171,7 +169,9 @@ In order to set the environment you will need a linux machine with the following
     * Deploy to K8s - Create a scm pipline and use the ```deploy-kandula.groovy``` file from the <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Kandula-App Repo</a> (in the pipeline folder).
   
     **Now Kandula is up and running and can be accessed from the loadbalancer service endpoint:**
+    You can access the app on the external IP of the Kandula-project-lb service:
     ```
+    ws eks --region=us-east-1 update-kubeconfig --name <cluster_name>
     kubectl get svc -o wide
     ```
     <br />
@@ -201,8 +201,8 @@ The main input variables (can be changed as of your choice):
 |alb_name                 | Application Load Balancer name                  |string|private-resources-alb                                                        |
 |instance_type            | EC2 instance type                               |string|mainly t2-micro                                                              |
 |number_of_instances      | Number of instances for every kind of server    |number|consul=3, jenkins-agents=2, rest=1                                           |     
-|instance_name            | Name of the instance on aws and on consul's DNS |string| diffrenet values                                                            |
-|cluster_name             | Name of the EKS cluster                         |string| project-eks                                                                 |
+|instance_name            | Name of the instance on aws and on consul's DNS |string|different values                                                             |
+|cluster_name             | Name of the EKS cluster                         |string|project-eks                                                                  |
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [Kandula-App]: https://github.com/batelzag/kandula-project-app
