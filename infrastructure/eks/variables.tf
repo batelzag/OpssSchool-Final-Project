@@ -32,6 +32,19 @@ variable "consul_agents_sg" {
   type = string
 }
 
+variable "filebeat_sg" {
+  type = string
+}
+
+variable "node_exporter_sg" {
+  type = string
+}
+
+variable "jenkins_role_arn" {
+  description = "the arn for the jenkins agent access to eks role"
+  type        = string
+}
+
 variable "db_username" {
   description = "Database administrator username"
   type        = string

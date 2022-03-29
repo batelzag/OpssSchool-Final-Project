@@ -20,14 +20,30 @@ module "eks" {
       instance_type                 = "t3.medium"
       additional_userdata           = "echo foo bar"
       asg_desired_capacity          = 1
-      additional_security_group_ids = [aws_security_group.all_worker_mgmt.id, aws_security_group.prometheus_k8s_server_sg.id, "${var.consul_agents_sg}"]
+      additional_security_group_ids = [aws_security_group.all_worker_mgmt.id, "${var.consul_agents_sg}", "${var.node_exporter_sg}", "${var.filebeat_sg}"]
     },
     {
       name                          = "worker-group-2"
       instance_type                 = "t3.medium"
       additional_userdata           = "echo foo bar"
       asg_desired_capacity          = 1
-      additional_security_group_ids = [aws_security_group.all_worker_mgmt.id, aws_security_group.prometheus_k8s_server_sg.id, "${var.consul_agents_sg}"]
+      additional_security_group_ids = [aws_security_group.all_worker_mgmt.id, "${var.consul_agents_sg}", "${var.node_exporter_sg}", "${var.filebeat_sg}"]
+    }
+  ]
+
+  map_roles = [
+    {
+      rolearn   = var.jenkins_role_arn
+      username  = "jenkins-agents"
+      groups    = ["system:masters"]
+    }
+  ]
+
+  map_users = [
+    {
+      userarn   = data.aws_caller_identity.current.arn
+      username  = "admin"
+      groups    = ["system:masters"]
     }
   ]
 
