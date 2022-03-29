@@ -41,12 +41,15 @@ module "vpc" {
 }
 
 module "eks" {
-  	source 		= "./eks"
-	vpc_id 		= module.vpc.vpc_id
-	subnets_id 	= "${module.vpc.private_subnets[*]}"
-	consul_agents_sg = "${module.vpc.consul_agents_sg}"
-	db_username      = var.db_username
-	db_password 	 = var.db_password
+  	source 				= "./eks"
+	vpc_id 			 	= module.vpc.vpc_id
+	subnets_id 		 	= "${module.vpc.private_subnets[*]}"
+	consul_agents_sg 	= "${module.vpc.consul_agents_sg}"
+	filebeat_sg			= "${module.vpc.filebeat_sg}"
+	node_exporter_sg	= "${module.vpc.node_exporter_sg}"
+	jenkins_role_arn 	= "${module.vpc.jenkins_eks_role}"
+	db_username      	= var.db_username
+	db_password 	 	= var.db_password
 }
 
 module "jenkins-server" {
@@ -57,7 +60,7 @@ module "jenkins-server" {
 	key_name 			= "${module.vpc.pem_key_name}"
 	vpc_route53_zone	= "${module.vpc.vpc_route53_zone}"
 
-	ec2_instance_security_groups = ["${module.vpc.jenkins_server_sg}", "${module.vpc.consul_agents_sg}"]
+	ec2_instance_security_groups = ["${module.vpc.jenkins_server_sg}", "${module.vpc.consul_agents_sg}", "${module.vpc.filebeat_sg}", "${module.vpc.node_exporter_sg}", "${module.vpc.ssh_sg}"]
 	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
 	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
 }
@@ -70,9 +73,14 @@ module "jenkins-agents" {
 	key_name 			= "${module.vpc.pem_key_name}"
 	vpc_route53_zone	= "${module.vpc.vpc_route53_zone}"
 
-	ec2_instance_security_groups = ["${module.vpc.consul_agents_sg}"]
+	ec2_instance_security_groups = ["${module.vpc.consul_agents_sg}", "${module.vpc.filebeat_sg}", "${module.vpc.node_exporter_sg}", "${module.vpc.ssh_sg}"]
 	ec2_instance_iam_profile 	 = module.vpc.jenkins-access-eks-profile
 	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
+	eks_cluster_name			 = "${module.eks.cluster_name}"
+
+	depends_on = [
+		module.eks
+	]
 
 }
 
@@ -84,7 +92,7 @@ module "consul-servers" {
 	key_name 			= "${module.vpc.pem_key_name}"
 	vpc_route53_zone	= "${module.vpc.vpc_route53_zone}"
 
-	ec2_instance_security_groups = ["${module.vpc.consul_servers_sg}", "${module.vpc.consul_agents_sg}"]
+	ec2_instance_security_groups = ["${module.vpc.consul_servers_sg}", "${module.vpc.consul_agents_sg}", "${module.vpc.filebeat_sg}", "${module.vpc.node_exporter_sg}", "${module.vpc.ssh_sg}"]
 	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
 	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
 }
@@ -97,7 +105,7 @@ module "ansible-server" {
 	key_name 			= "${module.vpc.pem_key_name}"
 	vpc_route53_zone	= "${module.vpc.vpc_route53_zone}"
 
-	ec2_instance_security_groups = ["${module.vpc.consul_agents_sg}"]
+	ec2_instance_security_groups = ["${module.vpc.consul_agents_sg}", "${module.vpc.filebeat_sg}", "${module.vpc.node_exporter_sg}", "${module.vpc.ssh_sg}"]
 	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
 	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
 
@@ -115,7 +123,7 @@ module "prometheus-server" {
 	vpc_route53_zone	= "${module.vpc.vpc_route53_zone}"
 
 	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
-	ec2_instance_security_groups = ["${module.vpc.prometheus_server_sg}", "${module.vpc.consul_agents_sg}"]
+	ec2_instance_security_groups = ["${module.vpc.prometheus_server_sg}", "${module.vpc.consul_agents_sg}", "${module.vpc.filebeat_sg}", "${module.vpc.node_exporter_sg}", "${module.vpc.ssh_sg}"]
 	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
 }
 
@@ -128,7 +136,7 @@ module "grafana-server" {
 	vpc_route53_zone	= "${module.vpc.vpc_route53_zone}"
 
 	ec2_instance_iam_profile 	 = module.vpc.grafana-cloudwatch-profile
-	ec2_instance_security_groups = ["${module.vpc.grafana_server_sg}", "${module.vpc.consul_agents_sg}"]
+	ec2_instance_security_groups = ["${module.vpc.grafana_server_sg}", "${module.vpc.consul_agents_sg}", "${module.vpc.filebeat_sg}", "${module.vpc.node_exporter_sg}", "${module.vpc.ssh_sg}"]
 	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
 }
 
@@ -141,7 +149,7 @@ module "elk-server" {
 	vpc_route53_zone	= "${module.vpc.vpc_route53_zone}"
 
 	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
-	ec2_instance_security_groups = ["${module.vpc.elk_server_sg}", "${module.vpc.consul_agents_sg}"]
+	ec2_instance_security_groups = ["${module.vpc.elk_server_sg}", "${module.vpc.consul_agents_sg}", "${module.vpc.filebeat_sg}", "${module.vpc.node_exporter_sg}", "${module.vpc.ssh_sg}"]
 	bastion_public_ip 			 = "${module.bastion-server.bastion_public_ip[0]}"
 }
 
@@ -154,7 +162,7 @@ module "bastion-server" {
 	vpc_route53_zone	= "${module.vpc.vpc_route53_zone}"
 
 	ec2_instance_iam_profile 	 = module.vpc.consul-join-profile
-	ec2_instance_security_groups = ["${module.vpc.bastion_server_sg}", "${module.vpc.consul_agents_sg}"]
+	ec2_instance_security_groups = ["${module.vpc.bastion_server_sg}", "${module.vpc.consul_agents_sg}", "${module.vpc.filebeat_sg}", "${module.vpc.node_exporter_sg}", "${module.vpc.ssh_sg}"]
 }
 
 module "db-server" {
