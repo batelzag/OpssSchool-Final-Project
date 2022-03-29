@@ -12,6 +12,9 @@ data "template_file" "consul_agent" {
 data "template_file" "jenkins_agent" {
     count    = var.number_of_instances
     template = "${file("../configuration/Templates/jenkins_agent.sh.tpl")}"
+    vars     = {
+        eks_cluster_name = var.eks_cluster_name
+    }
 }
 
 data "template_file" "node_exporter" {

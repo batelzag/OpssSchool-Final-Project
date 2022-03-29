@@ -57,3 +57,9 @@ variable "bastion_public_ip" {
   description = "The public IP of the bastion server"
   type        = string
 }
+
+# The Bastion server IP address for provisioning files
+variable "eks_cluster_name" {
+  description = "The eks cluster name"
+  type        = string
+}
