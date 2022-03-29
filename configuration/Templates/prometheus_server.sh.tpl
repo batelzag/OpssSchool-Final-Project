@@ -47,7 +47,7 @@ scrape_configs:
     consul_sd_configs:
       - server: 'localhost:8500'
         services: 
-          - prometheus-prometheus-node-exporter-monitoring
+          - prometheus-node-exporter-monitoring
     relabel_configs:
       - source_labels: ['__meta_consul_service_id']
         target_label: 'pod'

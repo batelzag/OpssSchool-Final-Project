@@ -54,8 +54,8 @@ processors:
 #      host: "unix://var/run/docker.sock"
 
 output.elasticsearch:
-  hosts: [ "elasticsearch-server.service.final-project.consul.:9200" ]
+  hosts: [ "elasticsearch-server.service.final-project.consul:9200" ]
   index: "filebeat-%{[agent.version]}-%{+yyyy.MM.dd}"
 
-setup.kibana.host: "kibana-server.service.final-project.consul.:5601"
+setup.kibana.host: "kibana-server.service.final-project.consul:5601"
 setup.kibana.protocol: "http"

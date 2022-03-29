@@ -14,16 +14,11 @@ sudo dpkg -i grafana-enterprise_${grafana_version}_amd64.deb
 sudo tee /etc/grafana/provisioning/datasources/datasources.yml > /dev/null <<EOF
 apiVersion: 1
 datasources:
-  - name: prometheus-ec2
+  - name: prometheus
     type: prometheus
     access: proxy
     url: http://prometheus-server.service.final-project.consul:9090
     isDefault: true
-  - name: Prometheus-eks
-    type: prometheus
-    access: proxy
-    url: http://prometheus-server-monitoring.service.final-project.consul:9090
-    isDefault: false
   - name: CloudWatch
     type: cloudwatch
     access: proxy

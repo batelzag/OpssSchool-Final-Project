@@ -6,8 +6,8 @@ set -e
 
 # Install the requierd pkg for jenkins agent
 sudo apt-get update -y
-sudo apt install openjdk-11-jdk -y
-sudo apt install docker.io -y
+sudo apt install openjdk-11-jdk docker.io -y
+
 sudo service docker start
 sudo usermod -aG docker ubuntu
 sudo systemctl daemon-reload
@@ -45,5 +45,17 @@ consul reload
 # Install Trivy for Vulnerability scans 
 wget https://github.com/aquasecurity/trivy/releases/download/v0.17.0/trivy_0.17.0_Linux-64bit.deb
 sudo dpkg -i trivy_0.17.0_Linux-64bit.deb
+
+# Install kubectl for deploying with jenkins
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+aws eks --region=us-east-1 update-kubeconfig --name ${eks_cluster_name}
 
 exit 0
