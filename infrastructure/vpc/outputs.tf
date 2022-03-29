@@ -82,6 +82,24 @@ output "db_server_sg" {
     description = "the id of the security group assigned to the db server"
 }
 
+# Output the filebeat security group id
+output "filebeat_sg" {
+    value       = aws_security_group.filebeat_sg.id
+    description = "the id of the security group assigned to filebeat"
+}
+
+# Output the node exporter security group id
+output "node_exporter_sg" {
+    value       = aws_security_group.node_exporter_sg.id
+    description = "the id of the security group assigned to filebeat"
+}
+
+# Output the ssh security group id
+output "ssh_sg" {
+    value       = aws_security_group.ssh_sg.id
+    description = "the id of the security group assigned to filebeat"
+}
+
 # Output the consul agents iam profile
 output "consul-join-profile" {
     value       = aws_iam_instance_profile.consul-join-profile.name

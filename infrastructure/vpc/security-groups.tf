@@ -61,15 +61,6 @@ resource "aws_security_group" "consul_agents_sg" {
   vpc_id        = aws_vpc.project-vpc.id
 
   ingress {
-    description     = "Allow ssh inside sg and from bastion server"
-    from_port       = 22
-    to_port         = 22
-    protocol        = "tcp"
-    self            = true
-    security_groups = [aws_security_group.bastion_server_sg.id]
-  }
-
-  ingress {
     description = "Allow gossip between consul servers and agents"
     from_port   = 8301
     to_port     = 8302
@@ -98,30 +89,6 @@ resource "aws_security_group" "consul_agents_sg" {
     from_port   = 8600
     to_port     = 8600
     protocol    = "udp"
-    self        = true
-  }
-
-  ingress {
-    description = "Allow node exporter scarping inside sg"
-    from_port   = 9100
-    to_port     = 9100
-    protocol    = "tcp"
-    self        = true
-  }
-
-  ingress {
-    description = "Allow filebeat log transfering inside sg"
-    from_port   = 9200
-    to_port     = 9200
-    protocol    = "tcp"
-    self        = true
-  }
-
-  ingress {
-    description = "Allow filebeat log transfering inside sg"
-    from_port   = 5601
-    to_port     = 5601
-    protocol    = "tcp"
     self        = true
   }
 
@@ -157,6 +124,29 @@ resource "aws_security_group" "bastion_server_sg" {
   }
 }
 
+# Create a dedicated SG for ssh
+resource "aws_security_group" "ssh_sg" {
+  name          = "ssh"
+  description   = "Allow ssh inbound traffic"
+  vpc_id        = aws_vpc.project-vpc.id
+
+  ingress {
+    description     = "Allow ssh inside sg and from bastion server"
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    self            = true
+    security_groups = [aws_security_group.bastion_server_sg.id]
+  }
+  egress {
+    description = "Allow all outgoing traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 # Create a dedicated SG for prometheus Server
 resource "aws_security_group" "prometheus_server_sg" {
   name          = "prometheus-server"
@@ -171,6 +161,28 @@ resource "aws_security_group" "prometheus_server_sg" {
     cidr_blocks = ["0.0.0.0/0"] #consider changing to my ip only.
   }
 
+  egress {
+    description = "Allow all outgoing traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# Create a dedicated SG for node exporter
+resource "aws_security_group" "node_exporter_sg" {
+  name          = "node-exporter"
+  description   = "Allow traffic from node exporter to prometheus server"
+  vpc_id        = aws_vpc.project-vpc.id
+
+  ingress {
+    description = "Allow node exporter scarping inside sg"
+    from_port   = 9100
+    to_port     = 9100
+    protocol    = "tcp"
+    security_groups = [aws_security_group.prometheus_server_sg.id]
+  }
   egress {
     description = "Allow all outgoing traffic"
     from_port   = 0
@@ -215,6 +227,37 @@ resource "aws_security_group" "elk_server_sg" {
     to_port     = 5601
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"] #consider changing to my ip only.
+  }
+
+  egress {
+    description = "Allow all outgoing traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# Create a dedicated SG for filebeat
+resource "aws_security_group" "filebeat_sg" {
+  name          = "filebeat"
+  description   = "Allow traffic from filebeat to elk server"
+  vpc_id        = aws_vpc.project-vpc.id
+
+  ingress {
+    description = "Allow filebeat log transfering inside sg"
+    from_port   = 9200
+    to_port     = 9200
+    protocol    = "tcp"
+    security_groups = [aws_security_group.elk_server_sg.id]
+  }
+
+  ingress {
+    description = "Allow filebeat log transfering inside sg"
+    from_port   = 5601
+    to_port     = 5601
+    protocol    = "tcp"
+    security_groups = [aws_security_group.elk_server_sg.id]
   }
 
   egress {

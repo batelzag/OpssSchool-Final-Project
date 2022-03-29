@@ -12,4 +12,5 @@ resource "aws_key_pair" "project_key" {
 resource "local_file" "project_key" {
   sensitive_content  = tls_private_key.project_key.private_key_pem
   filename           = var.key_name
+  #file_permission    = "0400"
 }
